@@ -35,8 +35,10 @@ def writeToHTML(newString):
     f = open('docs/index.html', 'w')
     f.write(oldSoup.prettify())
     f.close()
-    cmd = 'git commit -a -m "Updated HTML file"'
-    os.system(cmd)
+    commitCmd = 'git commit -a -m "Updated HTML file"'
+    pushCmd = 'git push'
+    os.system(commitCmd)
+    os.system(pushCmd)
 
 def bracketParser(parsedString):
     ob = 0
