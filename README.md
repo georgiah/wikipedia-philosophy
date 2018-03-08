@@ -1,4 +1,4 @@
-# Getting to philosophy
+# Getting to Philosophy
 
 ## Introduction
 
