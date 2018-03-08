@@ -4,6 +4,37 @@ import pickle
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
 
+def getExceptionSiteList():
+    f = open('index.html', 'r')
+    text = f.read()
+    f.close()
+    parsedHtml = BeautifulSoup(text, 'html.parser')
+    parsedHtml = parsedHtml.find('ul', {'id': 'exceptions-sites'})
+    exceptions = []
+    for child in parsedHtml.children:
+        if child.string == '\n':
+            continue
+        exceptions.append((child.string).strip())
+
+    return exceptions
+
+def exceptionFound(hist):
+    newString = ''
+    for item in list(set(hist) - set(exceptions)):
+        newString += '<li>' + item + '</li>\n'
+    writeToHTML(newString)
+
+def writeToHTML(newString):
+    newSoup = BeautifulSoup(newString, 'html.parser')
+    f = open('index.html', 'r')
+    text = f.read()
+    f.close()
+    oldSoup = BeautifulSoup(text, 'html.parser')
+    oldSoup.find('ul', {'id': 'exceptions-sites'}).append(newSoup)
+    f = open('index.html', 'w')
+    f.write(oldSoup.prettify())
+    f.close()
+
 def bracketParser(parsedString):
     ob = 0
     cb = 0
@@ -41,6 +72,7 @@ def bracketParser(parsedString):
 def validate(history):
     if len(history) != len(set(history)):
         print('\nEntered a loop')
+        exceptionFound(history[1:])
         return 0
     if goal in history:
         print('\nReached Philosophy in %d steps' % (len(history) - 1))
@@ -48,7 +80,7 @@ def validate(history):
     return 1
 
 # constants
-classes = ['hatnote', 'thumb', 'IPA']
+classes = ['hatnote', 'thumb', 'IPA', 'boilerplate']
 ids = ['coordinates']
 suffixes = ['.png', '.PNG', '.svg', '.SVG', '.gif', '.GIF', '.jpg', 'JPG', '.jpeg', '.JPEG']
 
@@ -61,6 +93,8 @@ try:
 except:
     sites = {}
     pickle.dump(sites, open('wikidict.p', 'wb'))
+
+exceptions = getExceptionSiteList()
 
 # start with a random article
 history = ['/wiki/Special:Random']
@@ -91,6 +125,7 @@ while validate(history):
     # if there aren't any links, the game's over
     if len(links) == 0:
         print('\nNo available links')
+        exceptionFound(history[1:])
         break
 
     for link in links:
@@ -103,7 +138,7 @@ while validate(history):
             continue
 
         # if the link isn't internal, or is an image, skip to the next link
-        if (a[:5] != '/wiki' or any(x in a for x in suffixes)):
+        if (a[:6] != '/wiki/' or any(x in a for x in suffixes) or a[:16] == '/wiki/Wikipedia:'):
             continue
 
         for parent in link.parents:
