@@ -19,6 +19,8 @@ The code stores visited articles and their corresponding first links in a dictio
 
 The tradeoff involved is that if a Wikipedia article is updated, it won't be checked again to validate and update the first link. See the **TODO** section for further details.
 
+A list of articles that do **not** lead back to Philosophy can be found [here](https://georgiah.github.io/wikipedia-philosophy)
+
 ## Installation
 
 The `Python` code in this repository was developed using `Python 2.7.10`, which comes preinstalled on `Mac OS X 10.8^`. You can check if you have `Python` installed on your computer by running the command:
