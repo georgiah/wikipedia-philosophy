@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
 
 def getExceptionSiteList():
-    f = open('index.html', 'r')
+    f = open('docs/index.html', 'r')
     text = f.read()
     f.close()
     parsedHtml = BeautifulSoup(text, 'html.parser')
@@ -26,12 +26,12 @@ def exceptionFound(hist):
 
 def writeToHTML(newString):
     newSoup = BeautifulSoup(newString, 'html.parser')
-    f = open('index.html', 'r')
+    f = open('docs/index.html', 'r')
     text = f.read()
     f.close()
     oldSoup = BeautifulSoup(text, 'html.parser')
     oldSoup.find('ul', {'id': 'exceptions-sites'}).append(newSoup)
-    f = open('index.html', 'w')
+    f = open('docs/index.html', 'w')
     f.write(oldSoup.prettify())
     f.close()
 
