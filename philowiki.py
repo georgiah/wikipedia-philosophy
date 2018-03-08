@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import urllib
 import pickle
+import os
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
 
@@ -34,6 +35,8 @@ def writeToHTML(newString):
     f = open('docs/index.html', 'w')
     f.write(oldSoup.prettify())
     f.close()
+    cmd = 'git commit -a -m "Updated HTML file"'
+    os.system(cmd)
 
 def bracketParser(parsedString):
     ob = 0
