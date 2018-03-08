@@ -10,19 +10,20 @@ def getExceptionSiteList():
     text = f.read()
     f.close()
     parsedHtml = BeautifulSoup(text, 'html.parser')
-    parsedHtml = parsedHtml.find('ul', {'id': 'exceptions-sites'})
+    parsedHtml = parsedHtml.find_all('li')
     exceptions = []
-    for child in parsedHtml.children:
-        if child.string == '\n':
+    for li in parsedHtml:
+        text = (li.find('a')).text
+        if text == '\n':
             continue
-        exceptions.append((child.string).strip())
+        exceptions.append(text.strip())
 
     return exceptions
 
 def exceptionFound(hist):
     newString = ''
     for item in list(set(hist) - set(exceptions)):
-        newString += '<li><a href="https://wikipedia.org' + item + '">"' + item + '</a></li>\n'
+        newString += '<li><a href="https://wikipedia.org' + item + '">' + item + '</a></li>\n'
     writeToHTML(newString)
 
 def writeToHTML(newString):
