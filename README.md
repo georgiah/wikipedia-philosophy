@@ -50,6 +50,7 @@ The first time this is run, it will create another file called `wikidict.p`. Thi
 - [ ] allow an option command line input to specify the initial article
 - [ ] upload program to a server to continuously run and improve the dictionary
 - [ ] periodically check the validity of articles and their first links stored in the dictionary
+- [ ] store information on the categories of articles that don't lead back to Philosophy
 
 ## License
 MIT
