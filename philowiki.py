@@ -34,7 +34,7 @@ def writeToHTML(newString):
     oldSoup = BeautifulSoup(text, 'html.parser')
     oldSoup.find('ul', {'id': 'exceptions-sites'}).append(newSoup)
     f = open('docs/index.html', 'w')
-    f.write(oldSoup.prettify())
+    f.write(oldSoup.prettify().encode('utf-8'))
     f.close()
     commitCmd = 'git commit -a -m "Updated HTML file"'
     pushCmd = 'git push'
