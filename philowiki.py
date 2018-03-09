@@ -144,7 +144,7 @@ while validate(history):
             continue
 
         # if the link isn't internal, or is an image, skip to the next link
-        if (a[:6] != '/wiki/' or any(x in a for x in suffixes) or a[:16] == '/wiki/Wikipedia:' or a[:13] == '/wiki/Portal:'):
+        if (a[:6] != '/wiki/' or any(x in a for x in suffixes) or ':' in a):
             continue
 
         for parent in link.parents:
