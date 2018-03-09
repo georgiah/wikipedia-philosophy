@@ -5,11 +5,14 @@ import os
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
 
-def getExceptionSiteList():
+def readHtmlFile():
     f = open('docs/index.html', 'r')
     text = f.read()
     f.close()
-    parsedHtml = BeautifulSoup(text, 'html.parser')
+    return BeautifulSoup(text, 'html.parser')
+
+def getExceptionSiteList():
+    parsedHtml = readHtmlFile()
     parsedHtml = parsedHtml.find_all('li')
     exceptions = []
     for li in parsedHtml:
@@ -28,10 +31,7 @@ def exceptionFound(hist):
 
 def writeToHTML(newString):
     newSoup = BeautifulSoup(newString, 'html.parser')
-    f = open('docs/index.html', 'r')
-    text = f.read()
-    f.close()
-    oldSoup = BeautifulSoup(text, 'html.parser')
+    oldSoup = readHtmlFile()
     oldSoup.find('ul', {'id': 'exceptions-sites'}).append(newSoup)
     f = open('docs/index.html', 'w')
     f.write(oldSoup.prettify().encode('utf-8'))
@@ -135,7 +135,7 @@ while validate(history):
         break
 
     for link in links:
-        tabled = False
+        skip = False
 
         # if there isn't a URL to reference, skip to the next link
         try:
@@ -161,9 +161,9 @@ while validate(history):
             # content body, set the tabled flag and skip to the next link
             if (parent.name == 'table' or any(x in d for x in ids) or
             any(x in clss for x in classes)):
-                tabled = True
+                skip = True
                 break
-        if tabled:
+        if skip:
             continue
 
         # if the link jumps to a section, remove that section from the URL
