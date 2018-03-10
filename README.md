@@ -45,7 +45,7 @@ python philowiki.py
 
 The first time this is run, it will create another file called `wikidict.p`. This is where the dictionary of visited articles is saved.
 
-The program selects a random Wikipedia article. You can specify the article to start from by passing the URL as a command line argument, for example:
+The program selects a random Wikipedia article. You can override this and specify the article to start from by passing the URL as a command line argument, for example:
 
 ```
 python philowiki.py https://en.wikipedia.org/wiki/Python_(programming_language)
