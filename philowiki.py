@@ -160,6 +160,7 @@ while validate(history):
         if (a[:6] != '/wiki/' or any(x in a for x in suffixes) or ':' in a):
             continue
 
+        print(link)
         for parent in link.parents:
             print(parent.name)
             try:
