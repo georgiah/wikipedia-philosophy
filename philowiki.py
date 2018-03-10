@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import urllib
 import pickle
+import sys
 import os
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
@@ -104,6 +105,9 @@ exceptions = getExceptionSiteList()
 
 # start with a random article
 history = ['/wiki/Special:Random']
+
+if len(sys.argv) > 1:
+    history.append(sys.argv[1])
 
 while validate(history):
     # if we already know where this page links, look it up
