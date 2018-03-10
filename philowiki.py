@@ -3,6 +3,7 @@ import urllib
 import pickle
 import sys
 import os
+import re
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
 
@@ -82,7 +83,7 @@ def validate(history):
         exceptionFound(history[1:])
         return 0
     if goal in history:
-        print('\nReached Philosophy in %d steps' % (len(history) - 1))
+        print('\nReached Philosophy in %d steps' % ((len(history) - 1) if history[0] == randomStr else len(history)))
         return 0
     return 1
 
@@ -93,6 +94,7 @@ suffixes = ['.png', '.PNG', '.svg', '.SVG', '.gif', '.GIF', '.jpg', 'JPG', '.jpe
 
 urlBase = "https://en.wikipedia.org"
 goal = "/wiki/Philosophy"
+randomStr = '/wiki/Special:Random'
 
 # load the site dictionary
 try:
@@ -103,11 +105,18 @@ except:
 
 exceptions = getExceptionSiteList()
 
-# start with a random article
-history = ['/wiki/Special:Random']
-
+# pick an article to start with
 if len(sys.argv) > 1:
-    history.append(sys.argv[1])
+    x = re.compile('(/wiki/.*)')
+    m = x.search(sys.argv[1])
+    if m:
+        history = [m.group()]
+        print(history[0])
+    else:
+        print('Whoops, there was a problem parsing that.')
+        sys.exit()
+else:
+    history = [randomStr]
 
 while validate(history):
     # if we already know where this page links, look it up
@@ -178,7 +187,7 @@ while validate(history):
         # add the new link to the history and update the dictionary
         history.append(a)
         print(history[-1])
-        if len(history) > 2:
+        if len(history) > 2 or history[0] != randomStr:
             sites[history[-2]] = history[-1]
         break
 
