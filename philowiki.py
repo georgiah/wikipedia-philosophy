@@ -160,9 +160,8 @@ while validate(history):
         if (a[:6] != '/wiki/' or any(x in a for x in suffixes) or ':' in a):
             continue
 
-        print(link.parents)
-
         for parent in link.parents:
+            print(parent.name)
             try:
                 clss = parent['class']
             except:
@@ -178,6 +177,7 @@ while validate(history):
             any(x in clss for x in classes)):
                 skip = True
                 break
+        print('-------')
         if skip:
             continue
 
