@@ -91,6 +91,7 @@ def validate(history):
 classes = ['hatnote', 'thumb', 'IPA', 'boilerplate']
 ids = ['coordinates']
 suffixes = ['.png', '.PNG', '.svg', '.SVG', '.gif', '.GIF', '.jpg', 'JPG', '.jpeg', '.JPEG', '.ogg']
+rls = ['img']
 
 urlBase = "https://en.wikipedia.org"
 goal = "/wiki/Philosophy"
@@ -160,9 +161,9 @@ while validate(history):
         if (a[:6] != '/wiki/' or any(x in a for x in suffixes) or ':' in a):
             continue
 
-        print(link)
+    #    print(link)
         for parent in link.parents:
-            print(parent.name)
+            #print(parent.name)
             try:
                 clss = parent['class']
             except:
@@ -171,14 +172,18 @@ while validate(history):
                 d = parent['id']
             except:
                 d = ''
+            try:
+                r = parent['role']
+            except:
+                r = ''
 
             # if the link has a parent that signifies it isn't in the main
             # content body, set the tabled flag and skip to the next link
             if (parent.name == 'table' or any(x in d for x in ids) or
-            any(x in clss for x in classes)):
+            any(x in clss for x in classes) or any(x in r for x in rls)):
                 skip = True
                 break
-        print('-------')
+        #print('-------')
         if skip:
             continue
 
